@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
-// import { createComment } from "../api/comments.api";
 import { createComment } from "../api/comments.api";
 
-test("can send api", async ({ page, request }) => {
+test("can send api", async ({ request }) => {
   const comment = {
     title: "I am in love with someone.",
     userId: 5,
