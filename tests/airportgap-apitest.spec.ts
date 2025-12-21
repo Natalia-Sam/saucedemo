@@ -1,8 +1,5 @@
 import { test, expect } from "@playwright/test";
-import AirportApiService, {
-  getAirports,
-  getAirportsDistance,
-} from "../api/airportgap.api";
+import AirportApiService from "../api/airportgap.api";
 import Airport from "../api/interfaces/airport";
 import AirportsDistance from "../api/interfaces/airports-distance";
 
@@ -28,8 +25,8 @@ test.describe("API Suite", () => {
   test("verify airports list", async () => {
     const response = await apiService.getAirports();
     const airports: Airport[] = (await response.json()).data;
-    // console.log("airport name is: " + airports[0].attributes.name);
-    // console.log("airport length is: " + airports.length);
+    console.log(`airport name is: ${airports[0].attributes.name}`);
+    console.log(`array length is: ${airports.length}`);
     expect(airports.length, {
       message: "verify that response contains exactly 30 airports",
     }).toBe(30);
@@ -42,7 +39,7 @@ test.describe("API Suite", () => {
     });
     const airportsDistance: AirportsDistance = (await response.json()).data;
     const airportsDistanceValue = airportsDistance.attributes.kilometers;
-    // console.log(airportsDistanceValue);
+    console.log(`the distance between airports is ${airportsDistanceValue}`);
     expect(airportsDistanceValue, {
       message: "verify that distance is greater than 400 kilometers",
     }).toBeGreaterThan(400);
