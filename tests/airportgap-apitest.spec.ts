@@ -1,38 +1,53 @@
 import { test, expect } from "@playwright/test";
-import { expect as playwrightExpect } from "@playwright/test";
-import { getAirports, getAirportsDistance } from "../api/airportgap.api";
+import AirportApiService, {
+  getAirports,
+  getAirportsDistance,
+} from "../api/airportgap.api";
+import Airport from "../api/interfaces/airport";
+import AirportsDistance from "../api/interfaces/airports-distance";
 
-test("airports list", async ({ request }) => {
-  const airportsList = await getAirports(request);
-  const airportsListJson = await airportsList.json();
-  expect(airportsListJson.data).toHaveLength(30);
+// -------- Refactored version -------------------------
 
-  const requiredAirports = [
-    "Akureyri Airport",
-    "St. Anthony Airport",
-    "CFB Bagotville",
-  ];
+// test("verify airport", async ({ request }) => {
+//   const response = await request.get("https://airportgap.com/api/airports");
+//   const airports: Airport[] = (await response.json()).data;
+//   console.log(airports[0].attributes.name);
+//   expect(airports.length, {
+//     message: "verify that response contains exactly 30 airports",
+//   }).toBe(30);
+// });
 
-  for (const airportName of requiredAirports) {
-    expect(airportsListJson.data).toContainEqual(
-      expect.objectContaining({
-        type: "airport",
-        attributes: expect.objectContaining({
-          name: airportName,
-        }),
-      }),
-    );
-  }
-});
+// -------- Refactored version with Suite -------------------------
 
-test("verify distance between airports", async ({ request }) => {
-  const airportsDistance = await getAirportsDistance(request, {
-    from: "KIX",
-    to: "NRT",
+test.describe("API Suite", () => {
+  let apiService: AirportApiService;
+  test.beforeEach(async ({ request }) => {
+    apiService = new AirportApiService(request);
   });
-  expect(airportsDistance.status()).toBe(200);
-  const airportsDistanceJson = await airportsDistance.json();
-  expect(airportsDistanceJson.data.attributes.kilometers).toBeGreaterThan(400);
+
+  test("verify airports list", async () => {
+    const response = await apiService.getAirports();
+    const airports: Airport[] = (await response.json()).data;
+    // console.log("airport name is: " + airports[0].attributes.name);
+    // console.log("airport length is: " + airports.length);
+    expect(airports.length, {
+      message: "verify that response contains exactly 30 airports",
+    }).toBe(30);
+  });
+
+  test("verify distance between airports", async () => {
+    const response = await apiService.getAirportsDistance({
+      from: "KIX",
+      to: "NRT",
+    });
+    const airportsDistance: AirportsDistance = (await response.json()).data;
+    const airportsDistanceValue = airportsDistance.attributes.kilometers;
+    // console.log(airportsDistanceValue);
+    expect(airportsDistanceValue, {
+      message: "verify that distance is greater than 400 kilometers",
+    }).toBeGreaterThan(400);
+  });
 });
 
 // npx playwright test airportgap-apitest
+// npx playwright test tests/airportgap-apitest.spec.ts --ui

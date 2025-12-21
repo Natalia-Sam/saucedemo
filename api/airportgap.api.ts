@@ -1,27 +1,27 @@
 import { APIRequestContext, expect } from "@playwright/test";
 
-export async function getAirports(apiClient: APIRequestContext) {
-  const airportsList = await apiClient.get(
-    `https://airportgap.com/api/airports`,
-    {
+export default class AirportApiService {
+  private baseUrl: string = "https://airportgap.com/api";
+  private request: APIRequestContext;
+  constructor(request: APIRequestContext) {
+    this.request = request;
+  }
+
+  async getAirports() {
+    const airportsList = await this.request.get(`${this.baseUrl}/airports`, {
       headers: { "Content-Type": "application/json" },
-    },
-  );
+    });
+    return airportsList;
+  }
 
-  return airportsList;
-}
-
-export async function getAirportsDistance(
-  apiClient: APIRequestContext,
-  requestObject: { from: string; to: string },
-) {
-  const airportsDistance = await apiClient.post(
-    `https://airportgap.com/api/airports/distance`,
-    {
-      headers: { "Content-Type": "application/json" },
-      data: JSON.stringify(requestObject),
-    },
-  );
-
-  return airportsDistance;
+  async getAirportsDistance(requestObject: { from: string; to: string }) {
+    const airportsDistance = await this.request.post(
+      `${this.baseUrl}/airports/distance`,
+      {
+        headers: { "Content-Type": "application/json" },
+        data: JSON.stringify(requestObject),
+      },
+    );
+    return airportsDistance;
+  }
 }

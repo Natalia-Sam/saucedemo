@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import baseEnvUrl from "./utils/environmentBaseUrl";
 
 /**
  * Read environment variables from file.
@@ -103,6 +104,20 @@ I'json', { outputFile: 'test-results.json' }]
     // {
     //   name: 'Google Chrome',
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    // },
+
+    //Exmples of different environment baseURLs
+    // {
+    //   name: "staging",
+    //   use: {
+    //     baseURL: baseEnvUrl.staging.home,
+    //   },
+    // },
+    // {
+    //   name: "production",
+    //   use: {
+    //     baseURL: baseEnvUrl.production.home,
+    //   },
     // },
   ],
 

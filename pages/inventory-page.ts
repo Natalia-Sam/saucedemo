@@ -21,7 +21,7 @@ export default class InventoryPage {
 
   public async addItemToCard(itemNumber: number) {
     const addToCardBtns = await this.addToCardBtn.all();
-    addToCardBtns[itemNumber].click();
+    await addToCardBtns[itemNumber].click();
   }
 
   public async shoppingCardBadgeCount() {
