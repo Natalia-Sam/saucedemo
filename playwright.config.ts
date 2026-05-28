@@ -5,9 +5,10 @@ import baseEnvUrl from "./utils/environmentBaseUrl";
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, ".env") });
+// npm install dotenv -D
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -106,7 +107,7 @@ I'json', { outputFile: 'test-results.json' }]
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
 
-    //Exmples of different environment baseURLs
+    //Examples of different environment baseURLs
     // {
     //   name: "staging",
     //   use: {
