@@ -42,7 +42,7 @@ test.describe('API Suite', () => {
         });
     });
 
-    test('verify distance between airports', async () => {
+    test('verify distance between airports KIX and NRT', async () => {
         let airportsDistanceValue: number;
         await test.step('Get Airports Distance', async () => {
             const response = await apiService.getAirportsDistance({
@@ -60,6 +60,47 @@ test.describe('API Suite', () => {
             // }).toBeGreaterThan(400);
 
             expect(airportsDistanceValue).toBeGreaterThan(400);
+        });
+    });
+
+    test('Verify Distance Is Returned in All Three Units', async () => {
+        let kilometersValue: number;
+        let milesValue: number;
+        let nauticalMilesValue: number;
+        await test.step('Get values of distances', async () => {
+            const response = await apiService.getAirportsDistance({
+                from: 'SYD',
+                to: 'LAX',
+            });
+            expect(response.status()).toBe(200);
+            const airportsDistance: AirportsDistance = (await response.json()).data;
+            kilometersValue = airportsDistance.attributes.kilometers;
+            milesValue = airportsDistance.attributes.miles;
+            nauticalMilesValue = airportsDistance.attributes.nautical_miles;
+        });
+
+        await test.step('verify that kilometers is greater than 12000', async () => {
+            // expect(kilometersValue, {
+            //     message: 'verify that kilometers is greater than 12000',
+            // }).toBeGreaterThan(12000);
+
+            expect(kilometersValue).toBeGreaterThan(12000);
+        });
+
+        await test.step('verify that miles is greater than 7000', async () => {
+            // expect(milesValue, {
+            //     message: 'verify that miles is greater than 7000',
+            // }).toBeGreaterThan(7000);
+
+            expect(milesValue).toBeGreaterThan(7000);
+        });
+
+        await test.step('verify that nautical_miles is greater than 6000', async () => {
+            // expect(nauticalMilesValue, {
+            //     message: 'verify that nautical_miles is greater than 6000',
+            // }).toBeGreaterThan(6000);
+
+            expect(nauticalMilesValue).toBeGreaterThan(6000);
         });
     });
 });
