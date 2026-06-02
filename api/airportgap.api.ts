@@ -28,4 +28,12 @@ export default class AirportApiService {
         });
         return airportInfo;
     }
+
+    async getAirportGapToken(requestObject: { email: string; password: string }) {
+        const airportGapToken = await this.request.post(`${this.baseUrl}/tokens`, {
+            headers: { 'Content-Type': 'application/json' },
+            data: JSON.stringify(requestObject),
+        });
+        return airportGapToken;
+    }
 }

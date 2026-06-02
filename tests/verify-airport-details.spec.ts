@@ -3,7 +3,7 @@ import AirportApiService from '../api/airportgap.api';
 import Airport from '../api/interfaces/airport';
 import ApiError from '../api/interfaces/api-error';
 
-test.describe('API Suite', () => {
+test.describe('Airport Details API Suite', () => {
     let apiService: AirportApiService;
     test.beforeEach(async ({ request }) => {
         await test.step('Create instance airport', async () => {
